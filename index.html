@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nadiye & Yusuf Can</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Georgia, serif;
+  background: #f2e4e7;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+.scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#openButton {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  background: rgba(255,255,255,0.9);
+  color: #4b4244;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+#openButton:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+#details {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 5%;
+  pointer-events: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.buttons a {
+  text-decoration: none;
+  color: #4b4244;
+  background: rgba(255,255,255,0.94);
+  padding: 10px 15px;
+  border-radius: 22px;
+  font-size: 13px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#countdown {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.75);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #5c5154;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- KAPALI ZARF -->
+  <div id="closed" class="scene">
+    <img src="IMG_3727.png" alt="Nadiye & Yusuf Can">
+    <button id="openButton">
+      💌 Davetiyeyi Açmak İçin Dokunun
+    </button>
+  </div>
+
+  <!-- AÇILMIŞ ZARF -->
+  <div id="opened" class="scene hidden">
+    <img src="IMG_3729.png" alt="Açılmış davetiye">
+  </div>
+
+  <!-- DAVETİYE -->
+  <div id="invitation" class="scene hidden">
+    <img src="IMG_3731.png" alt="Nadiye & Yusuf Can davetiyesi">
+
+    <div id="countdown"></div>
+
+    <div id="details">
+      <div class="buttons">
+        <a href="https://maps.apple/p/nSieDedtig9bE7" target="_blank">
+          📍 Konuma Git
+        </a>
+
+        <a href="#" id="calendarButton">
+          📅 Takvime Ekle
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+const openButton = document.getElementById("openButton");
+const closed = document.getElementById("closed");
+const opened = document.getElementById("opened");
+const invitation = document.getElementById("invitation");
+
+openButton.addEventListener("click", () => {
+
+  closed.classList.add("hidden");
+
+  setTimeout(() => {
+    opened.classList.remove("hidden");
+
+    setTimeout(() => {
+      opened.classList.add("hidden");
+      invitation.classList.remove("hidden");
+    }, 1800);
+
+  }, 700);
+
+});
+
+
+/* GERİ SAYIM */
+
+const target = new Date("2026-08-25T13:00:00+03:00").getTime();
+
+function updateCountdown() {
+
+  const now = new Date().getTime();
+  const distance = target - now;
+
+  if (distance <= 0) {
+    document.getElementById("countdown").innerHTML =
+      "Bugün buluşuyoruz 🤍";
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) /
+    (1000 * 60 * 60)
+  );
+
+  const minutes = Math.floor(
+    (distance % (1000 * 60 * 60)) /
+    (1000 * 60)
+  );
+
+  document.getElementById("countdown").innerHTML =
+    `${days} gün · ${hours} saat · ${minutes} dakika`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+
+/* TAKVİME EKLE */
+
+document.getElementById("calendarButton").addEventListener("click", (e) => {
+
+  e.preventDefault();
+
+  const start = "20260825T100000Z";
+  const end = "20260825T140000Z";
+
+  const url =
+    "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+    "&text=Nadiye%20%26%20Yusuf%20Can%20Nişan" +
+    "&dates=" + start + "/" + end +
+    "&location=İncesu%20Marina,%20İncesu,%20Kayseri" +
+    "&details=Sizi%20de%20aramızda%20görmekten%20mutluluk%20duyarız.%20🤍";
+
+  window.open(url, "_blank");
+});
+
+</script>
+
+</body>
+</html>
